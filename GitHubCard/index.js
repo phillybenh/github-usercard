@@ -34,8 +34,14 @@ followersArray.forEach(user => {
         console.log(response.data);
         response.data.forEach(user => {
           console.log(user.url);
-          let userURL = user.url;
-          entryPoint.append(gitCard(userURL));
+          axios
+          .get(user.url)
+          .then(response => {
+            entryPoint.append(gitCard(response.data));
+          })
+            .catch(error => {
+              console.log("The data was not returned", error);
+            });
         })
       })
         .catch(error => {
