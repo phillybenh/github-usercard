@@ -1,10 +1,13 @@
 
 const entryPoint = document.querySelector('.cards');
+
+/////// v MVP v ////// 
+/*
 const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell', 'phillybenh'];
 
 followersArray.forEach(user => {
   let followerUrl = `https://api.github.com/users/${user}`;
-  console.log(followerUrl);
+  // console.log(followerUrl);
   axios
     .get(followerUrl)
     .then(response => {
@@ -15,36 +18,35 @@ followersArray.forEach(user => {
       console.log("The data was not returned", error);
     });
 });
-/* Step 5: Now that you have your own card getting added to the DOM, either 
-          follow this link in your browser https://api.github.com/users/<Your github name>/followers 
-          , manually find some other users' github handles, or use the list found 
-          at the bottom of the page. Get at least 5 different Github usernames and add them as
-          Individual strings to the friendsArray below.
-          
-          Using that array, iterate over it, requesting data for each user, creating a new card for each
-          user, and adding that card to the DOM.
-*/
+*/ 
+/////// ^ MVP ^ //////
 
+////// vv Stretch vv //////
+  axios
+    .get('https://api.github.com/users/phillybenh')
+    .then(response => {
+      // console.log(response.data);
+      entryPoint.prepend(gitCard(response.data));
+      // console.log(response.data.followers_url);
+      axios
+      .get(response.data.followers_url)
+      .then(response => {
+        console.log(response.data);
+        response.data.forEach(user => {
+          console.log(user.url);
+          let userURL = user.url;
+          entryPoint.append(gitCard(userURL));
+        })
+      })
+        .catch(error => {
+          console.log("The data was not returned", error);
+        });
+    })
+    .catch(error => {
+      console.log("The data was not returned", error);
+    });
+////// ^^Stretch ^^ //////
 
-
-/* Step 3: Create a function that accepts a single object as its only argument,
-          Using DOM methods and properties, create a component that will return the following DOM element:
-
-<div class="card">
-  <img src={image url of user} />
-  <div class="card-info">
-    <h3 class="name">{users name}</h3>
-    <p class="username">{users user name}</p>
-    <p>Location: {users location}</p>
-    <p>Profile:  
-      <a href={address to users github page}>{address to users github page}</a>
-    </p>
-    <p>Followers: {users followers count}</p>
-    <p>Following: {users following count}</p>
-    <p>Bio: {users bio}</p>
-  </div>
-</div>
-*/
 function gitCard(obj) {
   const newCard = document.createElement('div'),
     image = document.createElement('img'),
@@ -85,10 +87,4 @@ function gitCard(obj) {
 };
 
 
-/* List of LS Instructors Github username's:
-  tetondan
-  dustinmyers
-  justsml
-  luishrd
-  bigknell
-*/
+
