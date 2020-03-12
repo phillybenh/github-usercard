@@ -1,31 +1,20 @@
-/* Step 1: using axios, send a GET request to the following URL 
-           (replacing the palceholder with your Github name):
-           https://api.github.com/users/<your name>
-*/
 
 const entryPoint = document.querySelector('.cards');
+const followersArray = ['tetondan', 'dustinmyers', 'justsml', 'luishrd', 'bigknell', 'phillybenh'];
 
-axios
-  .get('https://api.github.com/users/phillybenh')
-  .then(response => {
-    console.log(response.data);
-    entryPoint.append(gitCard(response.data));
-  })
-  .catch (error => {
-  console.log("The data was not returned", error);
+followersArray.forEach(user => {
+  let followerUrl = `https://api.github.com/users/${user}`;
+  console.log(followerUrl);
+  axios
+    .get(followerUrl)
+    .then(response => {
+      console.log(response.data);
+      entryPoint.append(gitCard(response.data));
+    })
+    .catch(error => {
+      console.log("The data was not returned", error);
+    });
 });
-
-/* Step 2: Inspect and study the data coming back, this is YOUR 
-   github info! You will need to understand the structure of this 
-   data in order to use it to build your component function 
-
-   Skip to Step 3.
-*/
-
-/* Step 4: Pass the data received from Github into your function, 
-           create a new component and add it to the DOM as a child of .cards
-*/
-
 /* Step 5: Now that you have your own card getting added to the DOM, either 
           follow this link in your browser https://api.github.com/users/<Your github name>/followers 
           , manually find some other users' github handles, or use the list found 
@@ -36,7 +25,7 @@ axios
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -69,8 +58,6 @@ function gitCard(obj) {
     following = document.createElement('p'),
     bio = document.createElement('p');
 
-//dfdf
-
   newCard.classList.add('card');
   name.classList.add('name');
   userName.classList.add('username');
@@ -83,9 +70,9 @@ function gitCard(obj) {
   profile.textContent = 'Profile: ';
   profileLink.textContent = obj.html_url;
   profileLink.href = obj.html_url;
-  console.log(obj.html_url);
-  console.log(profile);
-  console.log(profileLink);
+  // console.log(obj.html_url);
+  // console.log(profile);
+  // console.log(profileLink);
   followers.textContent = `Followers: ${obj.followers}`;
   following.textContent = `Following: ${obj.following}`;
   bio.textContent = `Bio: ${obj.bio}`;
@@ -93,7 +80,7 @@ function gitCard(obj) {
   newCard.append(image, infoContainer);
   infoContainer.append(name, userName, location, profile, followers, following, bio);
   profile.appendChild(profileLink);
-  
+
   return newCard;
 };
 
